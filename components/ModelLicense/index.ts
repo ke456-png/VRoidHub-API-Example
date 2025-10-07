@@ -1,0 +1,1 @@
+export { ModelLicense } from './ModelLicense';

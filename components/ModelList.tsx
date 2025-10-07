@@ -11,10 +11,11 @@ import {
   LoadingSpinner,
 } from '@charcoal-ui/react';
 import styled from 'styled-components';
-import type { ModelData } from '../types/vroid';
+import type { CharacterModelSerializer } from '@/types/Response';
+import { ModelLicense } from '@/components/ModelLicense';
 
 type Props = {
-  items: ModelData[];
+  items: CharacterModelSerializer[];
   title: string;
   message: string;
   loading: boolean;
@@ -40,7 +41,7 @@ export function ModelList({ items, title, message, loading, hasNext, onRequestLo
           </div>
         ) : (
           <ModelsGrid>
-            {items.map((model: ModelData) => {
+            {items.map((model: CharacterModelSerializer) => {
               return <EachModel key={model.id} model={model} />;
             })}
           </ModelsGrid>
@@ -62,7 +63,7 @@ export function ModelList({ items, title, message, loading, hasNext, onRequestLo
   );
 }
 
-const EachModel = ({ model }: { model: ModelData }) => {
+const EachModel = ({ model }: { model: CharacterModelSerializer }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMoralAgreed, setIsMoralAgreed] = useState<boolean>(false);
   const router = useRouter();
@@ -72,8 +73,8 @@ const EachModel = ({ model }: { model: ModelData }) => {
   }, [setIsOpen]);
 
   const handleClickUseModel = useCallback(
-    () => router.push(`/vrm?id=${model.id}&size=${model.originalFileSize}`),
-    [router, model.id, model.originalFileSize],
+    () => router.push(`/vrm?id=${model.id}&size=${model.latest_character_model_version?.original_file_size}`),
+    [router, model.id, model.latest_character_model_version?.original_file_size],
   );
 
   const handleClickMoralAgreed = useCallback((value: boolean) => setIsMoralAgreed(() => value), [setIsMoralAgreed]);
@@ -96,7 +97,7 @@ const EachModel = ({ model }: { model: ModelData }) => {
   return (
     <>
       <ListModelImgContaier>
-        <ListModelImg src={model.iconSquareImageUrl} onClick={handleClick} />
+        <ListModelImg src={model.portrait_image.sq300.url} onClick={handleClick} />
       </ListModelImgContaier>
       <Modal
         isDismissable={true}
@@ -111,42 +112,24 @@ const EachModel = ({ model }: { model: ModelData }) => {
           <ModalHeader />
           <ModalUpper>
             <ModalImageContainer>
-              <ModalImage src={model.portraitImageUrl as string} />
-              <ModalImage src={model.fullBodyImageUrl as string} />
+              <ModalImage src={model.portrait_image.w600.url} />
+              <ModalImage src={model.full_body_image.w600.url} />
             </ModalImageContainer>
             <div>
               <ChracterModelNameContainer>
-                <CharacterName>{model.characterName}</CharacterName>
-                <ModelName>{model.modelName ? ` / ${model.modelName}` : ''}</ModelName>
+                <CharacterName>{model.character.name}</CharacterName>
+                <ModelName>{model.name ? ` / ${model.name}` : ''}</ModelName>
               </ChracterModelNameContainer>
               <AuthorData>
-                <UserIcon src={model.user.iconUrl} />
-                <UserName>{model.user.name}</UserName>
-                <CreatedAt>{makeDateString(model.createdAt)}</CreatedAt>
+                <UserIcon src={model.character.user.icon.sq50.url} />
+                <UserName>{model.character.user.name}</UserName>
+                <CreatedAt>{makeDateString(model.created_at)}</CreatedAt>
               </AuthorData>
             </div>
           </ModalUpper>
 
           {/* モーダルの利用条件部分 */}
-          <LicenseContainer>
-            <LicenseRow style="info" title="フォーマット" value={model.format} />
-            <LicenseRow style={model.license.characterization ? 'ok' : 'ng'} title="アバターとしての利用" />
-            <LicenseRow style={model.license.violentExpression ? 'ok' : 'ng'} title="暴力表現での利用" />
-            <LicenseRow style={model.license.sexualExpression ? 'ok' : 'ng'} title="性的表現での利用" />
-            <LicenseRow style={model.license.corporateCommercialUse ? 'ok' : 'ng'} title="法人の商用利用" />
-            <LicenseRow style={model.license.personalNonCommercialUse ? 'ok' : 'ng'} title="個人の商用利用" />
-            <LicenseRow
-              style={model.license.personalCommercialUse ? 'ok' : 'ng'}
-              title="┗  個人の営利目的の活動（ギフティング等）"
-            />
-            <LicenseRow
-              style={model.license.personalNonCommercialUse ? 'ok' : 'ng'}
-              title="┗  個人の非営利目的の活動（同人活動等）のみ"
-            />
-            <LicenseRow style={model.license.modification ? 'ok' : 'ng'} title="改変" />
-            <LicenseRow style={model.license.redistribution ? 'ok' : 'ng'} title="再配布" />
-            <LicenseRow style="info" title="クレジット表示" value={model.license.credit ? '不要' : '必要'} />
-          </LicenseContainer>
+          <ModelLicense model={model} />
 
           {/* モーダルフッター部分 */}
           <ModalFooter>
@@ -331,74 +314,3 @@ const CreatedAt = styled.h6`
   margin-left: ${(props) => props.theme.spacing[8]}px;
   font-weight: 400;
 `;
-
-const LicenseRowContainer = styled.div`
-  margin: 0px;
-  margin: ${(props) => props.theme.spacing[8]}px;
-  font-size: ${(props) => props.theme.typography.size[14].fontSize}px;
-  line-height: ${(props) => props.theme.typography.size[14].lineHeight}px;
-`;
-
-// モーダルの利用規約確認。項目の方。色毎に分かれてるだけ。
-const LicenseTitleGrey = styled.p`
-  color: ${(props) => props.theme.color.surface4};
-  display: inline;
-  font-weight: 400;
-`;
-const LicenseTitleBlack = styled.p`
-  color: ${(props) => props.theme.color.text2};
-  display: inline;
-  font-weight: 400;
-`;
-
-// モーダルの利用規約確認。「OK」「NG」の方。色毎に分かれてるだけ。
-const LicenseItemGreen = styled.h4`
-  color: ${(props) => props.theme.color.success};
-  display: inline;
-  font-weight: 700;
-`;
-const LicenseItemGrey = styled.h4`
-  color: ${(props) => props.theme.color.surface4};
-  display: inline;
-  font-weight: 700;
-`;
-const LicenseItemBlack = styled.h4`
-  color: ${(props) => props.theme.color.text2};
-  display: inline;
-  font-weight: 700;
-`;
-
-// モーダルのライセンスの入れ物
-const LicenseContainer = styled.div`
-  border-top: solid thin ${(props) => props.theme.color.surface10};
-  border-bottom: solid thin ${(props) => props.theme.color.surface10};
-  padding: ${(props) => props.theme.spacing[16]}px;
-`;
-
-// ライセンスの表示ロジック切り出し
-// title:value の形で表示。
-// これの色が 黒：黒をinfo, 黒：緑をok, 灰色：灰色をng, としてstyleを受け取る
-const LicenseRow = ({ style, title, value }: { style: 'info' | 'ok' | 'ng'; title: string; value?: string }) => {
-  if (value == null) value = style == 'ok' ? 'OK' : 'NG';
-
-  switch (style) {
-    case 'info':
-      return (
-        <LicenseRowContainer>
-          <LicenseTitleBlack>{title}</LicenseTitleBlack> : <LicenseItemBlack>{value}</LicenseItemBlack>
-        </LicenseRowContainer>
-      );
-    case 'ok':
-      return (
-        <LicenseRowContainer>
-          <LicenseTitleBlack>{title}</LicenseTitleBlack> : <LicenseItemGreen>{value}</LicenseItemGreen>
-        </LicenseRowContainer>
-      );
-    case 'ng':
-      return (
-        <LicenseRowContainer>
-          <LicenseTitleGrey>{title}</LicenseTitleGrey> : <LicenseItemGrey>{value}</LicenseItemGrey>
-        </LicenseRowContainer>
-      );
-  }
-};

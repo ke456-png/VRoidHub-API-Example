@@ -1,20 +1,17 @@
 import { signIn, useSession } from 'next-auth/client';
-
 import React, { useCallback, useState } from 'react';
 import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
-
 import { Button } from '@charcoal-ui/react';
 import styled from 'styled-components';
-
-import { ModelList } from '../components/ModelList';
-import type { ModelData } from '../types/vroid';
-import { IndexPageHeader } from '../components/Header';
+import { CharacterModelSerializer } from '@/types/Response';
+import { ModelList } from '@/components/ModelList';
+import { IndexPageHeader } from '@/components/Header';
 
 type ModelsListState = {
   nextMaxId: string | null;
   maxId: string | null;
-  items: ModelData[];
+  items: CharacterModelSerializer[];
 };
 
 export default function Index() {
@@ -140,7 +137,12 @@ export default function Index() {
 
           <ToVRoidHubButtonWrapper>
             <div style={{ width: '264px', display: 'grid' }}>
-            <Button variant="Navigation" fullWidth size="S" onClick={() => router.push(process.env.NEXT_PUBLIC_VROID_HUB_URL)}>
+              <Button
+                variant="Navigation"
+                fullWidth
+                size="S"
+                onClick={() => router.push(process.env.NEXT_PUBLIC_VROID_HUB_URL)}
+              >
                 <ToVRoidHubButtonText>VRoid Hubでキャラクターを探す</ToVRoidHubButtonText>
               </Button>
             </div>
