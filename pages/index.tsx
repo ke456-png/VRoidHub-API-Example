@@ -4,7 +4,7 @@ import { useAsync } from 'react-use';
 import { useRouter } from 'next/router';
 import { Button } from '@charcoal-ui/react';
 import styled from 'styled-components';
-import { CharacterModelSerializer } from '@/types/Response';
+import type { CharacterModelSerializer } from '@/types/Response';
 import { ModelList } from '@/components/ModelList';
 import { IndexPageHeader } from '@/components/Header';
 

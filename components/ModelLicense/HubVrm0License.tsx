@@ -1,4 +1,4 @@
-import { CharacterModelLicenseSerializer } from '@/types/Response';
+import type { CharacterModelLicenseSerializer } from '@/types/Response';
 import { LicenseItem } from './LicenseItem';
 import { getHubVrm0LicenseValue, getHubVrm0LicenseVariant } from './licenseUtils';
 
