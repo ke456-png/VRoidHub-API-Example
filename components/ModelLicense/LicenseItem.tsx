@@ -24,7 +24,7 @@ const StyledLicenseItem = styled.div`
 `;
 
 const StyledLicenseValue = styled.span<{ variant: 'default' | 'allow' | 'bold' }>`
-  color: #adadad;
+  color: ${(props) => props.theme.color.text3};
   font-weight: bold;
   ${(props) =>
     props.variant === 'allow' &&
