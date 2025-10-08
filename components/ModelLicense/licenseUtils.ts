@@ -1,4 +1,4 @@
-import type { CharacterModelLicenseSerializer } from '@/types/Response/models/CharacterModelLicenseSerializer';
+import type { CharacterModelLicenseSerializer } from '@/types/Response';
 import type { VRM1Meta } from '@pixiv/three-vrm';
 
 type LicenseProperty = keyof CharacterModelLicenseSerializer;

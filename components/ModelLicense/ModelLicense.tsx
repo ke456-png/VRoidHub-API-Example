@@ -1,4 +1,4 @@
-import { CharacterModelSerializer } from '@/types/Response';
+import type { CharacterModelSerializer } from '@/types/Response';
 import { VRM1License } from './Vrm1License';
 import { VRM0License } from './HubVrm0License';
 import styled from 'styled-components';

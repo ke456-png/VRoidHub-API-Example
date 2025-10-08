@@ -1,4 +1,4 @@
-import { VRM1Meta } from '@pixiv/three-vrm';
+import type { VRM1Meta } from '@pixiv/three-vrm';
 import { LicenseItem } from './LicenseItem';
 import { getVrm1LicenseValue, getVrm1LicenseVariant } from './licenseUtils';
 

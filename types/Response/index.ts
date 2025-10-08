@@ -6,3 +6,4 @@ export type { CharacterModelCollectionResponse } from './models/CharacterModelCo
 export type { HeartCollectionResponse } from './models/HeartCollectionResponse';
 export type { CharacterModelSerializer } from './models/CharacterModelSerializer';
 export type { HeartSerializer } from './models/HeartSerializer';
+export type { CharacterModelLicenseSerializer } from './models/CharacterModelLicenseSerializer';
