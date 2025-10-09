@@ -118,7 +118,7 @@ export const getVrm1LicenseValue = (vrm1Meta: VRM1Meta, property: vrm1MetaProper
     case 'modification':
       return status === 'allowModification' || status === 'allowModificationRedistribution' ? 'OK' : 'NG';
     case 'creditNotation':
-      return status === 'necessary' ? '必要' : '不要';
+      return status === 'required' ? '必要' : '不要';
     default:
       return '未設定';
   }
@@ -168,7 +168,7 @@ export const getVrm1LicenseVariant = (vrm1Meta: VRM1Meta, property: vrm1MetaProp
     case 'modification':
       return status === 'allowModification' || status === 'allowModificationRedistribution' ? 'allow' : 'default';
     case 'creditNotation':
-      return status === 'necessary' ? 'bold' : 'default';
+      return status === 'required' ? 'bold' : 'default';
     default:
       return 'default';
   }
