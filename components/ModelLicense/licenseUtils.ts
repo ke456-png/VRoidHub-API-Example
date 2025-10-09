@@ -34,7 +34,7 @@ export const getHubVrm0LicenseValue = (license: CharacterModelLicenseSerializer,
     case 'corporate_commercial_use':
       return status === 'allow' ? 'OK' : 'NG';
     default:
-      return status === 'allow' ? 'OK' : 'NG';
+      return '未設定';
   }
 };
 
@@ -54,7 +54,7 @@ export const getHubVrm0LicenseVariant = (
     case 'characterization_allowed_user':
       return status === 'everyone' ? 'allow' : 'default';
     case 'personal_commercial_use':
-      return status === 'disallow' || status === 'default' ? 'default' : 'allow';
+      return status === 'profit' || status === 'nonprofit' ? 'allow' : 'default';
     case 'credit':
       return status === 'necessary' ? 'bold' : 'default';
     case 'modification':
@@ -68,7 +68,7 @@ export const getHubVrm0LicenseVariant = (
     case 'corporate_commercial_use':
       return status === 'allow' ? 'allow' : 'default';
     default:
-      return status === 'allow' ? 'allow' : 'default';
+      return 'default';
   }
 };
 
