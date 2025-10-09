@@ -84,7 +84,7 @@ export const getVrm1LicenseValue = (vrm1Meta: VRM1Meta, property: vrm1MetaProper
   //「 個人の商用利用」は法人利用とプロパティが共用のため、commercialUsageの値を参照し判定する
   if (property === 'personalCommercialUse') {
     const status = vrm1Meta.commercialUsage;
-    if (typeof status === 'undefined') return '未設定';
+    if (status == null) return '未設定';
 
     return status === 'corporation' || status === 'personalProfit' ? 'OK' : 'NG';
   }
@@ -92,13 +92,13 @@ export const getVrm1LicenseValue = (vrm1Meta: VRM1Meta, property: vrm1MetaProper
   // 「改変物の再配布」は改変とプロパティが共用のため、modificationの値を参照し判定する
   if (property === 'modificationRedistribution') {
     const status = vrm1Meta.modification;
-    if (typeof status === 'undefined') return '未設定';
+    if (status == null) return '未設定';
 
     return status === 'allowModificationRedistribution' ? 'OK' : 'NG';
   }
 
   const status = vrm1Meta[property];
-  if (typeof status === 'undefined') return '未設定';
+  if (status == null) return '未設定';
 
   switch (property) {
     case 'avatarPermission':
@@ -134,7 +134,7 @@ export const getVrm1LicenseVariant = (vrm1Meta: VRM1Meta, property: vrm1MetaProp
   //「 個人の商用利用」は法人利用とプロパティが共用のため、commercialUsageの値を参照し判定する
   if (property === 'personalCommercialUse') {
     const status = vrm1Meta.commercialUsage;
-    if (typeof status === 'undefined') return 'default';
+    if (status == null) return 'default';
 
     return status === 'corporation' || status === 'personalProfit' ? 'allow' : 'default';
   }
@@ -142,13 +142,13 @@ export const getVrm1LicenseVariant = (vrm1Meta: VRM1Meta, property: vrm1MetaProp
   // 「改変物の再配布」は改変とプロパティが共用のため、modificationの値を参照し判定する
   if (property === 'modificationRedistribution') {
     const status = vrm1Meta.modification;
-    if (typeof status === 'undefined') return 'default';
+    if (status == null) return 'default';
 
     return status === 'allowModificationRedistribution' ? 'allow' : 'default';
   }
 
   const status = vrm1Meta[property];
-  if (typeof status === 'undefined') return 'default';
+  if (status == null) return 'default';
 
   switch (property) {
     case 'avatarPermission':
